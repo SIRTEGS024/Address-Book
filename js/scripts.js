@@ -60,7 +60,7 @@ function displayContact(newContact) {
   });
 }
 function hideContact() {
-  $("#show-contact").fadeOut("slow");
+  $("#show-contact").hide();
 }
 
 $(document).ready(function () {
@@ -94,10 +94,9 @@ $(document).ready(function () {
     $("ul#contacts").append("<li><span class='contact'>" + newContact.fullName() + "</span></li>");
     $("ul#contacts").fadeIn("slow");
 
-    $(".contact").last().hover(function () {
-      displayContact(newContact);
-    }, function () {
+    $(".contact").last().click(function () {
       hideContact();
+      displayContact(newContact);
     });
 
     resetFields();
