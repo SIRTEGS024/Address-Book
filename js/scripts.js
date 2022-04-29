@@ -3,20 +3,20 @@ function Contact(firstName, lastName) {
   this.lastName = lastName;
   this.addresses = [];
 }
-
 Contact.prototype.fullName = function () {
   return this.firstName + " " + this.lastName;
 }
+
 function Address(loc, street, city, state) {
   this.loc = loc;
   this.street = street;
   this.city = city;
   this.state = state;
 }
-
 Address.prototype.fullAddress = function () {
   return this.loc + ": " + this.street + ", " + this.city + ", " + this.state;
 }
+
 function addFields() {
   $("#new-addresses").append('<div class="new-address">' +
     '<div class="form-group">' +
@@ -50,7 +50,7 @@ function resetFields() {
   $("input.new-state").val("");
 }
 function displayContact(newContact) {
-  $("#show-contact").fadeIn("slow");
+  $("#show-contact").show();
   $("#show-contact h2").text(newContact.firstName);
   $(".first-name").text(newContact.firstName);
   $(".last-name").text(newContact.lastName);
@@ -69,39 +69,26 @@ $(document).ready(function () {
   });
   $("form#new-contact").submit(function (event) {
     event.preventDefault();
-
     let inputtedFirstName = $("input#new-first-name").val();
     let inputtedLastName = $("input#new-last-name").val();
-
-    newContact = new Contact(inputtedFirstName, inputtedLastName);
-
+    let newContact = new Contact(inputtedFirstName, inputtedLastName);
     $(".new-address").each(function () {
       let inputtedLoc = $(this).find("select.new-loc").val();
       let inputtedStreet = $(this).find("input.new-street").val();
       let inputtedCity = $(this).find("input.new-city").val();
       let inputtedState = $(this).find("input.new-state").val();
       if (inputtedStreet && inputtedCity && inputtedState) {
-        newAddress = {
-          loc: inputtedLoc, street: inputtedStreet, city: inputtedCity,
-          state: inputtedState
-        };
+        let newAddress = new Address(inputtedLoc, inputtedStreet, inputtedCity, inputtedState);
         newContact.addresses.push(newAddress);
-      };
-
+      }
     });
-
-    $("ul#contacts").hide();
     $("ul#contacts").append("<li><span class='contact'>" + newContact.fullName() + "</span></li>");
-    $("ul#contacts").fadeIn("slow");
-
+    $("ul#contacts").show();
     $(".contact").last().click(function () {
       hideContact();
       displayContact(newContact);
     });
-
     resetFields();
-
     $("div.new-address").not("#first").hide();
-
   });
 });
